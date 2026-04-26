@@ -64,6 +64,25 @@ adminEntries.post('/', async (c) => {
   return c.json(result, 201);
 });
 
+// PUT reorder entries
+adminEntries.put('/reorder', async (c) => {
+  const { orders } = await c.req.json<{ orders: { id: number; sort_order: number }[] }>();
+
+  if (!Array.isArray(orders) || orders.length === 0) {
+    return c.json({ error: 'Lista de órdenes requerida' }, 400);
+  }
+
+  const batch = orders.map(({ id, sort_order }) =>
+    c.env.DB.prepare(
+      `UPDATE entries SET sort_order = ?, updated_at = datetime('now') WHERE id = ?`
+    ).bind(sort_order, id)
+  );
+
+  await c.env.DB.batch(batch);
+
+  return c.json({ success: true });
+});
+
 // PUT update entry
 adminEntries.put('/:id', async (c) => {
   const id = Number(c.req.param('id'));
@@ -148,25 +167,6 @@ adminEntries.delete('/:id', async (c) => {
   }
 
   await c.env.DB.prepare('DELETE FROM entries WHERE id = ?').bind(id).run();
-
-  return c.json({ success: true });
-});
-
-// PUT reorder entries
-adminEntries.put('/reorder', async (c) => {
-  const { orders } = await c.req.json<{ orders: { id: number; sort_order: number }[] }>();
-
-  if (!Array.isArray(orders) || orders.length === 0) {
-    return c.json({ error: 'Lista de órdenes requerida' }, 400);
-  }
-
-  const batch = orders.map(({ id, sort_order }) =>
-    c.env.DB.prepare(
-      `UPDATE entries SET sort_order = ?, updated_at = datetime('now') WHERE id = ?`
-    ).bind(sort_order, id)
-  );
-
-  await c.env.DB.batch(batch);
 
   return c.json({ success: true });
 });
