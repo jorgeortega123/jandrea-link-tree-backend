@@ -1,0 +1,19 @@
+{
+  "name": "jandrea-catalog-api",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "db:migrate": "wrangler d1 migrations apply jandrea-catalog-db --local",
+    "db:migrate:prod": "wrangler d1 migrations apply jandrea-catalog-db --remote"
+  },
+  "dependencies": {
+    "hono": "^4.7.10"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250418.0",
+    "wrangler": "^4.14.1",
+    "typescript": "^5.8.3"
+  }
+}

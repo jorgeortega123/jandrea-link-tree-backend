@@ -1,0 +1,13 @@
+import { cors } from 'hono/cors';
+import type { Bindings } from '../types';
+
+export const corsMiddleware = cors({
+  origin: (origin, c) => {
+    const env = c.env as Bindings;
+    const allowed = [env.FRONTEND_URL, 'http://localhost:5173'];
+    return allowed.includes(origin) ? origin : allowed[0];
+  },
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+});
