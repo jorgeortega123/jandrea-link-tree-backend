@@ -21,3 +21,15 @@ export type Entry = {
 };
 
 export type PublicEntry = Omit<Entry, 'is_active' | 'created_at' | 'updated_at'>;
+
+export type SocialLink = {
+  id: number;
+  label: string;
+  icon: string;
+  url: string;
+  sort_order: number;
+  created_at: string;
+  updated_at: string;
+};
+
+export type PublicSocialLink = Omit<SocialLink, 'created_at' | 'updated_at'>;
