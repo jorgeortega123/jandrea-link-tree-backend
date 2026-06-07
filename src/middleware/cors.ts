@@ -10,6 +10,7 @@ export const corsMiddleware = cors({
       'https://jandrea-link-tree-frontend.pages.dev',
       'https://jandrea.art',
       'https://www.jandrea.art',
+      'https://store.jandrea.art',
     ];
     return allowed.includes(origin) ? origin : null;
   },
